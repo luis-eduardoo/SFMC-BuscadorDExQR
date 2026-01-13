@@ -1,0 +1,282 @@
+
+<!-- 
+%%[
+  set @txtNameBusca = RequestParameter('txtNameBusca')
+  set @selecaoBusca = RequestParameter('selecaoBusca')
+]%%
+-->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Buscador DE & Query | luis-eduardoo</title>
+
+  <link rel="icon" type="image/png" href="https://image.relacionamento.ton.com.br/lib/fe2a11727164047a7d1176/m/1/aa4c738d-e5b4-419e-adae-60842ca2fab4.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      background: #f4f6f8;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      padding: 40px 15px;
+    }
+
+    .card {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: linear-gradient(75deg, #1E90FF, #0000FF);
+      padding: 24px;
+      text-align: center;
+      color: #ffffff;
+      position: relative;
+    }
+
+    .card-header img {
+      max-width: 90px;
+      margin-bottom: 10px;
+    }
+
+    .card-body {
+      padding: 30px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-control {
+      border-radius: 6px;
+      height: 46px;
+    }
+
+    .btn-primary {
+      background-color: #1E90FF;
+      border-color: #1E90FF;
+      border-radius: 6px;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background-color: #0E3386;
+      border-color: #0E3386;
+    }
+
+    .result-box {
+      margin-top: 30px;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .result-title {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+
+    .result-table th {
+      background: #f8fafc;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #6b7280;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .result-table td {
+      font-size: 13px;
+      border-bottom: 1px solid #f0f2f4;
+    }
+
+    .result-table tr:hover td {
+      background: #f9fafb;
+    }
+
+    .copy-btn {
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .copy-btn:hover {
+      opacity: 0.7;
+    }
+
+    .copy-feedback {
+      display: none;
+      font-size: 11px;
+      color: #00a859;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+<p style="font-size:12px;color:#6b7280;text-align:center;">
+  [v1.0.0] Buscador DE & Query
+</p>
+
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="card-header">
+
+    <a href="https://github.com/luis-eduardoo"
+       target="_blank"
+       style="position:absolute;top:16px;left:16px;">
+      <img src="https://image.relacionamento.ton.com.br/lib/fe2a11727164047a7d1176/m/1/de13ea5d-eb97-4033-aa38-ddcd607436d2.png"
+           style="max-width:25px;">
+    </a>
+
+    <img src="https://user-images.githubusercontent.com/79629964/197451272-02f194f9-b3f4-4807-b479-53239608619a.gif"
+         style="margin:0 auto 20px;max-width:250px;">
+
+    <h2>Buscador DE & Query</h2>
+    <p>github.com/luis-eduardoo</p>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <!-- FORM -->
+    <form action="[CLOUDPAGE LINK]" method="post">
+      <div class="row">
+        <div class="col-md-6">
+          <label>Tipo de busca</label>
+          <select name="selecaoBusca" class="form-control">
+            <option value="dataExtension">Data Extension</option>
+            <option value="query">Query</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label>Nome da DE ou Query</label>
+          <input name="txtNameBusca" class="form-control"
+                 placeholder="Digite a nomenclatura SFMC"
+                 value="%%=v(@txtNameBusca)=%%">
+        </div>
+      </div>
+
+      <div class="text-center" style="margin-top:25px;">
+        <button class="btn btn-primary">
+          Pesquisar <i class="glyphicon glyphicon-search"></i>
+        </button>
+      </div>
+    </form>
+
+    <!-- %%[IF @txtNameBusca != '' THEN]%% -->
+    <div class="result-box">
+
+      <!-- %%[IF @selecaoBusca == "dataExtension" THEN]%% -->
+      <div class="result-title">
+        Resultados para Data Extension: <b>%%=v(@txtNameBusca)=%%</b>
+      </div>
+
+      <table class="result-table">
+        <script runat="server">
+          Platform.Load("core","1.1.5");
+          try {
+            var prox = new Script.Util.WSProxy();
+            var sourceDE = Platform.Variable.GetValue("@txtNameBusca").toUpperCase();
+
+            var filter = {
+              LeftOperand:{Property:"QueryText",SimpleOperator:"like",Value:sourceDE},
+              LogicalOperator:"OR",
+              RightOperand:{Property:"DataExtensionTarget.Name",SimpleOperator:"equals",Value:sourceDE}
+            };
+
+            var res = prox.retrieve("QueryDefinition",["Name","Status","DataExtensionTarget.Name"],filter).Results;
+
+            if(res.length>0){
+              Write("<tr><th>Query</th><th>Status</th><th>Uso</th><th style='text-align:center'>Copiar</th></tr>");
+              for(var i=0;i<res.length;i++){
+                var uso = res[i].DataExtensionTarget.Name.toUpperCase()==sourceDE?"Target":"From";
+                Write(
+                  "<tr><td>"+res[i].Name+"</td><td>"+res[i].Status+"</td><td>"+uso+
+                  "</td><td style='text-align:center'><span class='copy-btn' onclick=\"copyText('"+res[i].Name+"',this)\">📋</span><span class='copy-feedback'>Copiado!</span></td></tr>"
+                );
+              }
+            } else {
+              Write("<tr><td colspan='4'><b>Nenhuma query associada.</b></td></tr>");
+            }
+          } catch(e){Write(e);}
+        </script>
+      </table>
+
+      <!-- %%[ELSE]%% -->
+      <div class="result-title">
+        Resultados para Query: <b>%%=v(@txtNameBusca)=%%</b>
+      </div>
+
+      <table class="result-table">
+        <script runat="server">
+          Platform.Load("core","1.1.5");
+          try{
+            var prox=new Script.Util.WSProxy();
+            var q=Platform.Variable.GetValue("@txtNameBusca").toUpperCase();
+
+            var acts=prox.retrieve("Activity",["Name","Program.ObjectID"],{Property:"Name",SimpleOperator:"Equals",Value:q}).Results;
+
+            if(acts.length>0){
+              Write("<tr><th>Automação</th><th>Status</th><th>Tipo</th><th>Última Execução</th><th>Última Modificação</th><th style='text-align:center'>Copiar</th></tr>");
+              for(var i=0;i<acts.length;i++){
+                var autos=prox.retrieve("Automation",["Name","Status","AutomationType","LastRunTime","LastSaveDate"],{Property:"ProgramID",SimpleOperator:"Equals",Value:acts[i].Program.ObjectID}).Results;
+                for(var j=0;j<autos.length;j++){
+                  Write(
+                    "<tr><td>"+autos[j].Name+"</td><td>"+autos[j].Status+"</td><td>"+autos[j].AutomationType+
+                    "</td><td>"+autos[j].LastRunTime+"</td><td>"+autos[j].LastSaveDate+
+                    "</td><td style='text-align:center'><span class='copy-btn' onclick=\"copyText('"+autos[j].Name+"',this)\">📋</span><span class='copy-feedback'>Copiado!</span></td></tr>"
+                  );
+                }
+              }
+            } else {
+              Write("<tr><td colspan='6'><b>Nenhuma automação encontrada.</b></td></tr>");
+            }
+          }catch(e){Write(e);}
+        </script>
+      </table>
+
+      <!-- %%[ENDIF]%% -->
+    </div>
+    <!-- %%[ENDIF]%% -->
+
+  </div>
+</div>
+
+<script>
+  function copyText(text, el) {
+    navigator.clipboard.writeText(text).then(function () {
+      var feedback = el.nextElementSibling;
+      feedback.style.display = "inline";
+      setTimeout(function () {
+        feedback.style.display = "none";
+      }, 1200);
+    });
+  }
+</script>
+
+</body>
+</html>
